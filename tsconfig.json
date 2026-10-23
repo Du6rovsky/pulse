@@ -1,0 +1,46 @@
+{
+  "extends": "@tsconfig/svelte/tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "declarationDir": "src/types",
+    "experimentalDecorators": true,
+    "target": "esnext",
+    "useDefineForClassFields": true,
+    "module": "esnext",
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
+    "ignoreDeprecations": "5.0",
+    "isolatedModules": true,
+    "sourceMap": true,
+    "strict": false,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowJs": true,
+    "checkJs": true,
+    "types": [
+      "vite/client"
+    ],
+    "paths": {
+      "@shared": ["shared/index.ts"]
+    },
+  },
+  "include": [
+    "src/**/*.d.ts",
+    "src/**/*.ts",
+    "src/**/*.js",
+    "src/**/*.svelte",
+    "tests/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "tests/server"
+  ],
+  "lib": [
+    "esnext",
+    "dom",
+    "dom.iterable",
+    "ES2020"
+  ]
+}

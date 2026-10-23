@@ -1,0 +1,216 @@
+@import "tailwindcss";
+@source inline("{pt,pb,pl,pr}-[{0..100}px]");
+@source "./assets/safelist.txt";
+@tailwind utilities;
+
+@layer utilities {
+    .num {
+        font-family: ui-monospace, "SF Mono", "SFMono-Regular", "Menlo",
+                     "Consolas", "DejaVu Sans Mono", monospace;
+        font-variant-numeric: tabular-nums;
+        font-feature-settings: "tnum" 1;
+        letter-spacing: 0;
+    }
+
+    .px-safe {
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+    }
+
+    .pt-safe {
+        padding-top: env(safe-area-inset-top);
+    }
+
+    .pb-safe {
+        padding-bottom: calc(env(safe-area-inset-bottom) + 8px);
+    }
+
+    .pb-safe-web {
+        padding-bottom: calc(env(safe-area-inset-bottom) + 20px);
+    }
+
+    .mb-safe {
+        margin-bottom: calc(env(safe-area-inset-bottom) + 8px);
+    }
+
+    .mb-safe-web {
+        margin-bottom: calc(env(safe-area-inset-bottom) + 8px);
+    }
+
+    .pb-safe-nav {
+        padding-bottom: calc(env(safe-area-inset-bottom) / 2);
+    }
+
+    .mb-safe-nav {
+        margin-bottom: calc(env(safe-area-inset-bottom) / 2);
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+}
+
+@theme {
+    --font-serif: "Helvetica", "sans-serif";
+    --color-fort-100: #212327;
+    --color-fort-200: #292a2d;
+    --color-fort-300: #404045;
+    --color-fort-400: #999aa5;
+    --color-fort-500: #cdd4df;
+    --color-primary: #13134A;
+    --color-primary-100: #A1A1B7;
+    --color-primary-400: #1E221F;
+    --color-secondary: #3478CC;
+    --color-secondary-40: #F8F8F8;
+    --color-secondary-50: #F1F7FF;
+    --color-secondary-75: #3478CC08;
+    --color-secondary-85: #3478CC1A;
+    --color-secondary-90: #3478cc33;
+    --color-secondary-95: #165aae4d;
+    --color-secondary-300: #5D93D6;
+    --color-secondary-400: #3573C9;
+    --color-secondary-450: #255494;
+    --color-secondary-650: #144582;
+    --color-secondary-800: #003399;
+    --color-secondary-850: #1A3963;
+    --color-neutral: #A1A3AD;
+    --color-neutral-50: #FBFBFB;
+    --color-neutral-70: #FAFAFB;
+    --color-neutral-75: #F7F7F8;
+    --color-neutral-100: #F6F6F7;
+    --color-neutral-200: #E3E3E6;
+    --color-neutral-250: #0C274921;
+    --color-neutral-500: #7D808E;
+    --color-neutral-700: #2F3036;
+    --color-success: #58C800;
+    --color-success-300: #79D333;
+    --color-error: #E90028;
+    --color-error-250: #FF5D5D;
+    --color-warning: #FFCC00;
+    --color-warning-100: #FFDE43;
+    --color-confirmed: #34C234;
+    --color-not-checked: #2196F3;
+    --color-rejected: #FF7A00;
+    --color-paused: #FFC123;
+    --leading-sm: 1.416vh;
+    --leading-sm-2: 1.533vh;
+    --leading-sm-3: 1.652vh;
+    --leading-sm-4: 1.777vh;
+    --leading-base: 1.890vh;
+    --leading-md: 2.014vh;
+    --leading-lg: 2.123vh;
+    --leading-lg-2: 2.251vh;
+    --leading-xl: 2.360vh;
+    --leading-1xl: 2.605vh;
+    --leading-2xl: 2.960vh;
+    --leading-3xl: 3.700vh;
+    --leading-4xl: 4.625vh;
+    --leading-10xl: 4.7375vh;
+    --leading-12xl: 5.783vh;
+    --leading-6xl: 7.106vh;
+    --leading-18xl: 8.527vh;
+    --leading-8xl: 11.370vh;
+    --leading-9xl: 15.160vh;
+    --height-88: 22rem;
+    --min-height-4: 1.888vh;
+    --min-height-14: 6.608vh;
+    --min-height-28: 13.216vh;
+    --min-height-32: 15.104vh;
+    --min-width-6: 2.832vh;
+    --min-width-8: 3.776vh;
+    --min-width-9: 4.247vh;
+    --min-width-10: 4.72vh;
+    --min-width-12: 5.664vh;
+    --min-width-13: 6.135vh;
+    --min-width-16: 7.552vh;
+    --min-width-23: 10.856vh;
+    --min-width-24: 11.328vh;
+    --min-width-30: 14.16vh;
+    --min-width-41: 19.234vh;
+    --min-width-65: 30.68vh;
+    --min-width-70: 33.04vh;
+    --max-width-25: 11.799vh;
+    --max-width-31: 14.632vh;
+    --max-width-43: 20.296vh;
+    --max-width-55: 25.96vh;
+    --max-width-58: 27.376vh;
+    --max-width-65: 30.68vh;
+    --max-width-70: 33.04vh;
+    --max-width-80: 37.76vh;
+    --max-width-92: 43.424vh;
+    --min-height-23: 10.856vh;
+    --text-xs: 0.944vh;
+    --text-xs-2: 1.062vh;
+    --text-xs-3: 1.180vh;
+    --text-sm: 1.416vh;
+    --text-sm-2: 1.533vh;
+    --text-sm-3: 1.652vh;
+    --text-sm-4: 1.777vh;
+    --text-base: 1.890vh;
+    --text-md: 2.014vh;
+    --text-lg: 2.123vh;
+    --text-lg-2: 2.251vh;
+    --text-xl: 2.360vh;
+    --text-1xl: 2.605vh;
+    --text-2xl: 2.960vh;
+    --text-2_5xl: 3.304vh;
+    --text-3xl: 3.700vh;
+    --text-3_5xl: 3.79vh;
+    --text-4xl: 4.625vh;
+    --text-10xl: 4.7375vh;
+    --text-10_5xl: 4.9807vh;
+    --text-11_5xl: 5.31vh;
+    --text-12xl: 5.783vh;
+    --text-15xl: 7.106vh;
+    --text-18xl: 8.527vh;
+    --text-24xl: 11.370vh;
+    --text-9xl: 15.160vh;
+}
+
+html, body {
+    background: #212327 linear-gradient(to bottom, #212327, #292a2d) !important;
+    font-family: "Gill Sans", "Tahoma", sans-serif;
+    font-weight: normal;
+}
+
+* {
+    -webkit-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+
+    -webkit-tap-highlight-color: transparent;
+}
+
+textarea, input {
+    outline: none;
+    -webkit-appearance: none;
+    box-shadow: none !important;
+}
+
+.ripple-container {
+    position: relative;
+}
+
+span.ripple {
+    position: absolute;
+    border-radius: 50%;
+    transform: scale(0);
+    animation: ripple 500ms;
+}
+
+@keyframes ripple {
+    from {
+        opacity: 0.25;
+        transform: scale(0.5);
+    }
+
+    to {
+        opacity: 0;
+        transform: scale(2);
+    }
+}
