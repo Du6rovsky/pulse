@@ -10,6 +10,7 @@ export const access = $state({
     busy: false,
     error: '',
     refundRub: 0,
+    refundUntil: 0,
     key: '',
     plan: '1m' as PlanId,
     revoked: 0,

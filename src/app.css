@@ -37,10 +37,6 @@
         margin-bottom: calc(env(safe-area-inset-bottom) + 8px);
     }
 
-    .pb-safe-nav {
-        padding-bottom: calc(env(safe-area-inset-bottom) / 2);
-    }
-
     .mb-safe-nav {
         margin-bottom: calc(env(safe-area-inset-bottom) / 2);
     }

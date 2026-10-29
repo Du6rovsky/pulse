@@ -269,7 +269,7 @@ function px(price: string, k: number): string {
     return (+price * k).toFixed(decimals(price));
 }
 
-function exampleEvent(s: NewSignalState, price: string, ratios: number[]): NotifyEvent | null {
+export function exampleEvent(s: NewSignalState, price: string, ratios: number[]): NotifyEvent | null {
     const st = strategy(s);
     const coins = activeSlots(s);
     const p = stratPeriod(s) as Period;

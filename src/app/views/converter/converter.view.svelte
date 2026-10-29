@@ -111,7 +111,7 @@
 <MainTmpl isShowHeader={false} isOverflowScroll={true}>
     {#snippet content()}
         <ConnectionNotice classes="pt-1"/>
-        <div class="w-full flex flex-col gap-1 border border-fort-300 rounded-md mt-1 bg-fort-100">
+        <div class="w-full flex flex-col gap-1 overflow-hidden border border-fort-300 rounded-md mt-1 bg-fort-100">
             <div class="flex flex-row justify-between pt-1 pr-1">
                 <button class="flex flex-col items-end justify-end grow rounded-md text-white mr-8
                                    relative gap-0.5 ripple-container rpl-white"

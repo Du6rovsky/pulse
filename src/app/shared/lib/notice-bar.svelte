@@ -1,4 +1,6 @@
 <script lang="ts">
+    import {addRippleEffect} from "../../core/utils/toolbox.util";
+
     type Props = {
         tone: 'red' | 'yellow' | 'cyan';
         title: string;
@@ -18,8 +20,10 @@
 
 {#if onclick}
     <button type="button"
-            class="w-full text-left flex flex-col gap-1 px-2 py-1.5 rounded-r-lg border-l-2 {TONES[tone].box}"
+            class="w-full text-left flex flex-col gap-1 px-2 py-1.5 rounded-r-lg border-l-2 {TONES[tone].box}
+                   overflow-hidden ripple-container rpl-white"
             aria-haspopup="dialog"
+            use:addRippleEffect
             {onclick}>
         {@render body()}
     </button>

@@ -8,8 +8,9 @@
     import {keyInput} from "../../core/utils/license.util";
     import {dateLong, readReceipt, readRefundReceipts} from "../../core/utils/pay.util";
     import {rubNum} from "../../core/utils/new-signal.util";
+    import {addRippleEffect} from "../../core/utils/toolbox.util";
     import {activateByKey, ensureKey, getKey, keyFromFile} from "../services/license.service";
-    import {disablePro, openDisable, openReceipt, startPay} from "../services/pay.service";
+    import {disablePro, loadDisableQuote, openDisable, openReceipt, startPay} from "../services/pay.service";
     import ProPopup from "./pro.popup.svelte";
     import KeyPopup from "./key.popup.svelte";
     import Popup from "./popup-tmpl.component.svelte";
@@ -29,7 +30,7 @@
     let until = $derived(me.paidUntil ? dateLong(me.paidUntil) : '');
     let ownKey = $derived(access.sheet === 'access' && me.pro ? getKey() ?? '' : '');
     let receipt = $derived(access.sheet === 'access' && me.pro ? pay.receipt ?? readReceipt() : null);
-    let refundReceipts = $derived(access.sheet === 'access' && !me.pro ? pay.refunds ?? readRefundReceipts() : []);
+    let refundReceipts = $derived(access.sheet === 'access' ? pay.refunds ?? readRefundReceipts() : []);
     let copied = $state(false);
     let copiedTimer: ReturnType<typeof setTimeout>;
 
@@ -56,6 +57,12 @@
             if (s === 'restore' && !locked) setNote('');
             prev = s;
         });
+    });
+
+    $effect(() => {
+        const show = access.sheet === 'access' && me.pro;
+        const reach = online;
+        if (show) untrack(() => loadDisableQuote(reach));
     });
 
     async function toKey(plan: PlanId) {
@@ -219,12 +226,14 @@
             </div>
 
             {#if me.pro}
-                <button type="button"
-                        class="{BTN_SEC} {online && !access.busy ? 'text-white' : 'text-fort-400'}"
-                        disabled={!online || access.busy}
-                        onclick={openDisable}>
-                    {$_('DISABLE_PRO')}
-                </button>
+                {#if access.refundRub > 0}
+                    <button type="button"
+                            class="{BTN_SEC} {online && !access.busy ? 'text-white' : 'text-fort-400'}"
+                            disabled={!online || access.busy}
+                            onclick={openDisable}>
+                        {$_('DISABLE_PRO')}
+                    </button>
+                {/if}
 
                 <div class="flex flex-col gap-2 p-3 rounded-lg border border-fort-300">
                     <span class="text-sm leading-sm text-fort-400 font-light">{$_('KEY_LABEL')}</span>
@@ -241,8 +250,14 @@
                     </button>
                 {/if}
 
+                {#if refundReceipts.length}
+                    <button type="button" class="{BTN_SEC} text-white" onclick={toRefundReceipt}>
+                        {$_('REFUND_RECEIPT')}
+                    </button>
+                {/if}
+
                 <div class="grid grid-cols-2 gap-2">
-                    <button type="button" class="{BTN_SEC} text-white" onclick={copyKey}>
+                    <button type="button" class="{BTN_SEC} text-white overflow-hidden ripple-container rpl-white" use:addRippleEffect onclick={copyKey}>
                         {$_(copied ? 'COPIED' : 'COPY_KEY')}
                     </button>
                     <button type="button"
@@ -286,7 +301,7 @@
     {#snippet content()}
         <div class="flex flex-col gap-3 px-1 pb-2">
             <ul class="flex flex-col gap-1.5 pl-5 list-disc marker:text-fort-400 text-sm-3 leading-sm-4 text-white font-light">
-                <li>{$_('DISABLE_PRO_NOW')}</li>
+                <li>{$_('DISABLE_PRO_UNTIL', {values: {at: dateLong(access.refundUntil)}})}</li>
                 <li>{$_('DISABLE_SIGNALS')}</li>
                 <li>{$_('DISABLE_KEY')}</li>
                 {#if access.refundRub > 0}
@@ -350,8 +365,9 @@
             </div>
 
             <button type="button"
-                    class="{BTN_SEC} {online && !reading ? 'text-white' : 'text-fort-400'}"
+                    class="{BTN_SEC} {online && !reading ? 'text-white' : 'text-fort-400'} overflow-hidden ripple-container rpl-white"
                     disabled={!online || reading || busy}
+                    use:addRippleEffect
                     onclick={() => fileInput?.click()}>
                 {$_('RK_FILE')}
             </button>

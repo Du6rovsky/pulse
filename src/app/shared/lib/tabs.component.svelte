@@ -42,15 +42,15 @@
 </script>
 
 
-<div class="w-full flex items-center justify-center fixed bottom-0 z-1000">
-    <div class="w-full min-[32rem]:max-w-md flex flex-col bg-fort-100 rounded-t-md border-t border-fort-300 overflow-hidden
-                pb-safe-nav">
+<div class="max-w-104 flex items-center justify-center fixed inset-x-4 bottom-2.5 mb-safe-nav mx-auto z-1000">
+    <div class="w-full flex flex-col bg-fort-100 bg-linear-to-b from-fort-200 to-fort-100 rounded-3xl border border-fort-300 overflow-hidden">
     {#if line}
         <button type="button"
-                class="w-full h-5 flex flex-row items-center gap-2 px-2 border-b border-fort-300
-                       text-xs-3 leading-xs-3 font-light text-fort-400 whitespace-nowrap overflow-hidden"
+                class="w-full h-5 flex flex-row items-center gap-2 px-4 border-b border-fort-300
+                       text-xs-3 leading-xs-3 font-light text-fort-400 whitespace-nowrap overflow-hidden ripple-container rpl-white"
                 aria-haspopup="dialog"
                 aria-label="{$_(line.key)} {$_('CONN_MORE')}"
+                use:addRippleEffect
                 onclick={openConnSheet}>
             <span class="w-2.5 h-2.5 shrink-0 rounded-full border-[1.5px] border-r-transparent animate-spin motion-reduce:animate-none
                          {line.tone ? SPIN[line.tone] : 'border-fort-400'}"

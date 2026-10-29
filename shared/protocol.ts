@@ -101,6 +101,7 @@ export interface PayUpdateData {
 
 export interface DisableQuoteData {
     amountRub: number;
+    until?: number;
 }
 
 export interface RefundsData {

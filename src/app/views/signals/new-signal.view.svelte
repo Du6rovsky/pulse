@@ -48,8 +48,8 @@
         {id: 'strat', label: 'STRATEGIES'},
     ];
     const MARKET_LABELS: Record<Market, string> = {spot: 'SPOT', perp: 'PERP'};
-    const NAV_HEIGHT = 44;
-    const NAV_LINE_HEIGHT = 21;
+    const NAV_HEIGHT = 56;
+    const NAV_LINE_HEIGHT = 20;
     const PCT_PERIODS = P_PCT.map(p => ({id: p, value: p}));
     const icn = icons();
 
@@ -298,7 +298,7 @@
 
 <MainTmpl isShowHeader={false} isOverflowScroll={true} isShowFooter={true} bottomPosition={NAV_HEIGHT + (hasLine ? NAV_LINE_HEIGHT : 0)}>
     {#snippet content()}
-        <div class="w-full flex flex-col gap-3 {hasLine ? 'pb-34' : 'pb-28'}">
+        <div class="w-full flex flex-col gap-3 {hasLine ? 'pb-36' : 'pb-31'}">
             <div class="flex flex-row items-center gap-2 pt-1">
                 <button type="button"
                         class="flex items-center justify-center border border-fort-300 rounded-md w-7 h-7 shrink-0 p-1 text-fort-400"
@@ -316,8 +316,9 @@
                         <button type="button" role="tab"
                                 aria-selected={newSignal.market === m}
                                 tabindex={newSignal.market === m ? 0 : -1}
-                                class="px-2 py-0.5 rounded-md text-sm font-light
-                                       {newSignal.market === m ? 'bg-fort-300 text-white' : 'text-fort-400'}"
+                                class="px-2 py-0.5 rounded-md text-sm font-light overflow-hidden
+                                       {newSignal.market === m ? 'bg-fort-300 text-white' : 'text-fort-400'} ripple-container rpl-white"
+                                use:addRippleEffect
                                 onclick={() => setMarket(m)}
                                 onkeydown={(e) => arrows(e, i, MARKETS.length, (k) => setMarket(MARKETS[k]))}>
                             {$_(MARKET_LABELS[m])}
@@ -334,7 +335,8 @@
                             aria-selected={newSignal.mode === m}
                             tabindex={newSignal.mode === m ? 0 : -1}
                             class="py-1 rounded-md text-sm font-light truncate
-                                   {newSignal.mode === m ? 'bg-fort-300 text-white' : 'text-fort-400'}"
+                                   {newSignal.mode === m ? 'bg-fort-300 text-white' : 'text-fort-400'} ripple-container rpl-white"
+                            use:addRippleEffect
                             onclick={() => setMode(m)}
                             onkeydown={(e) => arrows(e, i, MODES.length, (k) => setMode(MODES[k]))}>
                         {MODE_LABELS[newSignal.market][i]}
@@ -377,7 +379,8 @@
                                 aria-selected={newSignal.tab === tab.id}
                                 tabindex={newSignal.tab === tab.id ? 0 : -1}
                                 class="py-1 rounded-md text-sm font-light truncate
-                                       {newSignal.tab === tab.id ? 'bg-fort-300 text-white' : 'text-fort-400'}"
+                                       {newSignal.tab === tab.id ? 'bg-fort-300 text-white' : 'text-fort-400'} ripple-container rpl-white"
+                                use:addRippleEffect
                                 onclick={() => newSignal.tab = tab.id}
                                 onkeydown={(e) => arrows(e, i, TABS.length, (k) => newSignal.tab = TABS[k].id)}>
                             {$_(tab.label)}
@@ -442,9 +445,10 @@
 
                     <button type="button"
                             class="flex flex-row justify-between items-center gap-1 p-2 min-w-0 rounded-md
-                                   bg-fort-300/60 border border-fort-300 text-left"
+                                   bg-fort-300/60 border border-fort-300 text-left overflow-hidden ripple-container rpl-white"
                             aria-haspopup="dialog"
                             aria-label="{$_('PERIOD')}: {newSignal.pctPeriod}"
+                            use:addRippleEffect
                             onclick={() => periodModal?.toShow()}>
                         <span class="flex flex-col min-w-0">
                             <span class="text-xs-3 leading-xs-3 font-light text-fort-400 truncate">{$_('PERIOD')}</span>
@@ -458,9 +462,10 @@
                 <div class="grid grid-cols-3 gap-2">
                     <button type="button"
                             class="{strat.id === 'ratio' ? 'col-span-3' : 'col-span-2'} flex flex-row justify-between items-center gap-1 p-2 min-w-0 rounded-md
-                                   bg-fort-300/60 border border-fort-300 text-left"
+                                   bg-fort-300/60 border border-fort-300 text-left overflow-hidden ripple-container rpl-white"
                             aria-haspopup="dialog"
                             aria-label="{$_('STRATEGY')}: {strat.ru}"
+                            use:addRippleEffect
                             onclick={() => selectStrategyModal?.toShow()}>
                         <span class="flex flex-col min-w-0">
                             <span class="text-xs-3 leading-xs-3 font-light text-fort-400 truncate">{$_('STRATEGY')}</span>
@@ -482,9 +487,10 @@
                     {:else}
                         <button type="button"
                                 class="flex flex-row justify-between items-center gap-1 p-2 min-w-0 rounded-md
-                                       bg-fort-300/60 border border-fort-300 text-left"
+                                       bg-fort-300/60 border border-fort-300 text-left overflow-hidden ripple-container rpl-white"
                                 aria-haspopup="dialog"
                                 aria-label="{strat.paramLabel}: {stratP}"
+                                use:addRippleEffect
                                 onclick={() => (strat.id === 'fund' ? fundModal : periodModal)?.toShow()}>
                             <span class="flex flex-col min-w-0">
                                 <span class="text-xs-3 leading-xs-3 font-light text-fort-400 truncate">{strat.paramLabel}</span>
@@ -538,9 +544,10 @@
     {#snippet footer()}
         <div class="w-full px-1">
             <button type="button"
-                    class="w-full h-11 rounded-lg text-sm-4
-                           {canCreate ? 'bg-cyan-400 text-fort-100' : 'bg-fort-300 text-fort-400'}"
+                    class="w-full h-11 rounded-lg text-sm-4 overflow-hidden
+                           {canCreate ? 'bg-cyan-400 text-fort-100' : 'bg-fort-300 text-fort-400'} ripple-container rpl-white"
                     disabled={!canCreate || busy}
+                    use:addRippleEffect
                     onclick={create}>
                 {$_('CREATE_SIGNAL')}
                 {#if newSignalView.needPro}

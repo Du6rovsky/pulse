@@ -4,6 +4,7 @@
     import Popup from "./popup-tmpl.component.svelte";
     import RadioButton from "./radio-button.svelte";
     import {canReachServer} from "../../core/store/connection.svelte";
+    import {addRippleEffect} from "../../core/utils/toolbox.util";
     import {icons} from "../../assets/icons/icons";
     import {tick} from "svelte";
     import {_} from "svelte-i18n";
@@ -77,7 +78,9 @@
                             role="radio"
                             aria-checked={r.id === plan}
                             tabindex={r.id === plan ? 0 : -1}
-                            class="w-full p-2 rounded-md text-left border border-fort-300 {r.id === plan ? 'bg-fort-200' : ''}"
+                            class="w-full p-2 rounded-md text-left border border-fort-300 overflow-hidden
+                                   {r.id === plan ? 'bg-fort-200' : ''} ripple-container rpl-white"
+                            use:addRippleEffect
                             onclick={() => plan = r.id}
                             onkeydown={(e) => arrows(e, idx)}>
                         <RadioButton item={{id: r.id, value: r.name}} selectedId={plan} sub={r.sub}>

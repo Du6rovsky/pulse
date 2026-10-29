@@ -1,6 +1,7 @@
 <script lang="ts">
     import {FUND_MAX, FUND_MIN, FUND_STEP, fundLabel} from "@shared";
     import {clampFund, stepFund} from "../../core/utils/new-signal.util";
+    import {addRippleEffect} from "../../core/utils/toolbox.util";
     import Popup from "./popup-tmpl.component.svelte";
     import Slider from "./slider.svelte";
     import {tick} from "svelte";
@@ -43,17 +44,21 @@
         <div bind:this={box} class="flex flex-col gap-3 px-1 pb-2">
             <div class="grid grid-cols-[2.75rem_minmax(0,1fr)_2.75rem] items-center gap-2">
                 <button type="button"
-                        class="num w-11 h-11 rounded-lg border border-fort-300 text-white text-xl disabled:opacity-35"
+                        class="num w-11 h-11 rounded-lg border border-fort-300 text-white text-xl disabled:opacity-35
+                               overflow-hidden ripple-container rpl-white"
                         aria-label={$_('STEP_DEC')}
                         disabled={pend <= FUND_MIN}
+                        use:addRippleEffect
                         onclick={() => pend = stepFund(pend, -1)}>
                     −
                 </button>
                 <span class="num text-center text-3xl leading-3xl font-bold text-green-300">{label}</span>
                 <button type="button"
-                        class="num w-11 h-11 rounded-lg border border-fort-300 text-white text-xl disabled:opacity-35"
+                        class="num w-11 h-11 rounded-lg border border-fort-300 text-white text-xl disabled:opacity-35
+                               overflow-hidden ripple-container rpl-white"
                         aria-label={$_('STEP_INC')}
                         disabled={pend >= FUND_MAX}
+                        use:addRippleEffect
                         onclick={() => pend = stepFund(pend, 1)}>
                     +
                 </button>

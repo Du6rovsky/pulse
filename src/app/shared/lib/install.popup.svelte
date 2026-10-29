@@ -3,6 +3,7 @@
     import {deviceInstallTarget, promptInstall} from "../services/pwa.service";
     import {install} from "../../core/store/install.svelte";
     import {stepParts} from "../../core/utils/install.util";
+    import {addRippleEffect} from "../../core/utils/toolbox.util";
     import {APP_HOST} from "../services/api.service";
     import {icons} from "../../assets/icons/icons";
     import {_} from "svelte-i18n";
@@ -67,8 +68,10 @@
 
             {#if canInstall}
                 <button type="button"
-                        class="w-full h-11 rounded-lg text-sm-4 {install.ready ? 'bg-cyan-400 text-fort-100' : 'bg-fort-300 text-fort-400'}"
+                        class="w-full h-11 rounded-lg text-sm-4 overflow-hidden
+                               {install.ready ? 'bg-cyan-400 text-fort-100' : 'bg-fort-300 text-fort-400'} ripple-container rpl-white"
                         disabled={!install.ready}
+                        use:addRippleEffect
                         onclick={promptInstall}>
                     {$_('INSTALL_BTN')}
                 </button>

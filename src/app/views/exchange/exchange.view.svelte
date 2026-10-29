@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {getLabel, getPercent24, getPercentStyle, getTurnOver, sortingArray} from "../../core/utils/toolbox.util";
+    import {addRippleEffect, getLabel, getPercent24, getPercentStyle, getTurnOver, sortingArray} from "../../core/utils/toolbox.util";
     import Filter from "../../shared/lib/filter-triangles.component.svelte";
     import MainTmpl from "../../shared/lib/main-tmpl.svelte";
     import {rates$} from "../../core/store/exchange.store";
@@ -60,19 +60,21 @@
 
 <MainTmpl isShowHeader={false} isOverflowScroll={true}>
     {#snippet content()}
-        <div class="w-full flex flex-col pb-12">
+        <div class="w-full flex flex-col pb-15">
             <ConnectionNotice classes="py-1"/>
             <div class="w-full flex flex-row justify-between text-slate-400 font-light text-xs-3 py-0.5">
                 <div class="flex flex-row justify-start items-center gap-2">
                     <button class="flex flex-row justify-start items-center gap-0.5
-                                   {checkSort(eSort.PAIRS) !== 0 ? 'text-cyan-200' : ''}"
+                                   {checkSort(eSort.PAIRS) !== 0 ? 'text-cyan-200' : ''} rounded-md overflow-hidden ripple-container rpl-white"
+                            use:addRippleEffect
                             onclick={() => changeSort(eSort.PAIRS)}>
                         {$_('TRADE_PAIRS')}
                         <Filter direction={checkSort(eSort.PAIRS)}/>
                     </button>
 
                     <button class="flex flex-row justify-start items-center gap-0.5
-                                   {checkSort(eSort.VALUE) !== 0 ? 'text-cyan-200' : ''}"
+                                   {checkSort(eSort.VALUE) !== 0 ? 'text-cyan-200' : ''} rounded-md overflow-hidden ripple-container rpl-white"
+                            use:addRippleEffect
                             onclick={() => changeSort(eSort.VALUE)}>
                         {$_('VALUE_24')}
                         <Filter direction={checkSort(eSort.VALUE)}/>
@@ -81,14 +83,16 @@
 
                 <div class="flex flex-row justify-end items-center gap-2">
                     <button class="flex flex-row justify-end items-center gap-0.5
-                                   {checkSort(eSort.PRICE) !== 0 ? 'text-cyan-200' : ''}"
+                                   {checkSort(eSort.PRICE) !== 0 ? 'text-cyan-200' : ''} rounded-md overflow-hidden ripple-container rpl-white"
+                            use:addRippleEffect
                             onclick={() => changeSort(eSort.PRICE)}>
                         {$_('PRICE')}
                         <Filter direction={checkSort(eSort.PRICE)}/>
                     </button>
 
                     <button class="flex flex-row justify-end items-center gap-0.5 text-xs h-full
-                                   {checkSort(eSort.CHANGE) !== 0 ? 'text-cyan-200' : ''}"
+                                   {checkSort(eSort.CHANGE) !== 0 ? 'text-cyan-200' : ''} rounded-md overflow-hidden ripple-container rpl-white"
+                            use:addRippleEffect
                             onclick={() => changeSort(eSort.CHANGE)}>
                         {$_('CHANGE_24')}
                         <Filter direction={checkSort(eSort.CHANGE)}/>

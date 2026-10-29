@@ -1,6 +1,7 @@
 <script lang="ts">
     import {qrModules, qrPath, QR_MARGIN} from "../../core/utils/license.util";
     import {canDownload, keyPng, saveKeyPng} from "../services/license.service";
+    import {addRippleEffect} from "../../core/utils/toolbox.util";
     import Popup from "./popup-tmpl.component.svelte";
     import Checkbox from "./checkbox.svelte";
     import Loader from "./loader.svelte";
@@ -89,13 +90,15 @@
 
             <div class="grid grid-flow-col auto-cols-fr gap-2">
                 <button type="button"
-                        class="h-10 rounded-lg border border-fort-300 text-sm-3 text-white font-light"
+                        class="h-10 rounded-lg border border-fort-300 text-sm-3 text-white font-light overflow-hidden ripple-container rpl-white"
+                        use:addRippleEffect
                         onclick={copy}>
                     {$_(copied ? 'COPIED' : 'COPY')}
                 </button>
                 {#if canSave}
                     <button type="button"
-                            class="h-10 rounded-lg border border-fort-300 text-sm-3 text-white font-light"
+                            class="h-10 rounded-lg border border-fort-300 text-sm-3 text-white font-light overflow-hidden ripple-container rpl-white"
+                            use:addRippleEffect
                             onclick={download}>
                         {$_('DOWNLOAD_QR')}
                     </button>

@@ -1,5 +1,6 @@
 <script lang="ts">
     import {FREE, strategyBadge, type Mode, type Strategy, type StrategyId} from "@shared";
+    import {addRippleEffect} from "../../core/utils/toolbox.util";
     import Popup from "./popup-tmpl.component.svelte";
     import RadioButton from "./radio-button.svelte";
     import StrategyDetail from "./strategy-detail.svelte";
@@ -71,7 +72,8 @@
                                 role="radio"
                                 aria-checked={s.id === pend}
                                 tabindex={s.id === pend ? 0 : -1}
-                                class="w-full p-2 text-left"
+                                class="w-full p-2 text-left rounded-md overflow-hidden ripple-container rpl-white"
+                                use:addRippleEffect
                                 onclick={() => pend = s.id}
                                 onkeydown={(e) => arrows(e, idx)}>
                             <RadioButton item={{id: s.id, value: s.en}} selectedId={pend} sub={s.ru}>

@@ -1,6 +1,7 @@
 <script lang="ts">
     import {QUOTE_LABEL, type SignalRecord} from "@shared";
     import {cardSub, cardTickers, cardTitle, fmtDate, fmtDateTime} from "../../core/utils/signal-card.util";
+    import {addRippleEffect} from "../../core/utils/toolbox.util";
     import {icons} from "../../assets/icons/icons";
     import {_} from "../../core/utils/i18";
 
@@ -27,7 +28,9 @@
     {#if rec.paused}
         <button type="button"
                 aria-haspopup="dialog"
-                class="w-full flex flex-col gap-1 p-2 rounded-lg bg-fort-100 border border-fort-300 text-left opacity-50"
+                class="w-full flex flex-col gap-1 p-2 rounded-lg bg-fort-100 border border-fort-300 text-left opacity-50
+                       overflow-hidden ripple-container rpl-white"
+                use:addRippleEffect
                 onclick={onpaused}>
             {@render body()}
         </button>
@@ -39,9 +42,10 @@
 
     {#if ondelete}
         <button type="button"
-                class="absolute top-1.5 right-1.5 w-6 h-6 p-1 rounded-md text-fort-400 disabled:opacity-40"
+                class="absolute top-1.5 right-1.5 w-6 h-6 p-1 rounded-md text-fort-400 disabled:opacity-40 overflow-hidden rpl-white"
                 aria-label={$_('DELETE_SIGNAL')}
                 disabled={!canDelete}
+                use:addRippleEffect
                 onclick={ondelete}>
             {@html icn.trash}
         </button>
@@ -55,7 +59,8 @@
             <span class="text-slate-400 text-xs-3 leading-xs-3 font-light">{QUOTE_LABEL[rec.market]}</span>
         </span>
 
-        <span class="num shrink-0 flex flex-row items-center gap-1 text-fort-400 text-xs-3 leading-xs-3 {dim ? 'opacity-50' : ''}"
+        <span class="num shrink-0 flex flex-row items-center gap-1 text-xs-3 leading-xs-3
+                     {rec.hits > 0 ? 'text-cyan-200' : 'text-fort-400'} {dim ? 'opacity-50' : ''}"
               title={$_('HITS')}
               aria-label="{$_('HITS')}: {rec.hits}">
             <svg width="10" height="12" viewBox="0 0 10 12" aria-hidden="true"><path d="M6 0L0.8 7H4.6L3.8 12L9.2 4.8H5.4Z" fill="currentColor"/></svg>
@@ -70,6 +75,10 @@
 
     <div class="flex flex-row flex-wrap justify-between gap-x-3 text-xs-2 text-fort-400 font-light">
         <span>{$_('CREATED_AT')} {fmtDate(rec.createdAt)}</span>
-        <span>{rec.lastHitAt ? `${$_('FIRED_AT')} ${fmtDateTime(rec.lastHitAt)}` : $_('NOT_FIRED')}</span>
+        {#if rec.lastHitAt}
+            <span class="text-cyan-200">{$_('FIRED_AT')} {fmtDateTime(rec.lastHitAt)}</span>
+        {:else}
+            <span>{$_('NOT_FIRED')}</span>
+        {/if}
     </div>
 {/snippet}

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import {addRippleEffect} from "../../core/utils/toolbox.util";
   import {icons} from "../../assets/icons/icons";
 
   type Props = {
@@ -36,7 +37,8 @@
 <button type="button"
         role="checkbox"
         aria-checked={value}
-        class="{isFull ? 'w-full' : ''} flex flex-row {classes}"
+        class="{isFull ? 'w-full' : ''} flex flex-row {classes} rounded-md overflow-hidden ripple-container rpl-white"
+        use:addRippleEffect
         onclick={onClick}>
   <div class="flex-none mr-2">
     <div class="{checkClasses} rounded-md {!value ? 'border ' + (isShowError ? 'border-error-250' : 'border-neutral-500') : ''}

@@ -4,8 +4,9 @@
     import {newSignal} from "../../core/store/new-signal.svelte";
     import {activeCount, loadSignals, removeSignal, signals} from "../../core/store/signals.svelte";
     import {canReachServer, connection} from "../../core/store/connection.svelte";
-    import {connNotice, isDim} from "../../core/utils/connection-ui.util";
+    import {connNotice, isDim, statusLine} from "../../core/utils/connection-ui.util";
     import ConnectionNotice from "../../shared/lib/connection-notice.svelte";
+    import {addRippleEffect} from "../../core/utils/toolbox.util";
     import {me, pro} from "../../core/store/me.svelte";
     import MainTmpl from "../../shared/lib/main-tmpl.svelte";
     import SignalCard from "../../shared/lib/signal-card.svelte";
@@ -15,7 +16,6 @@
     import {pushNotice} from "../../core/utils/push.util";
     import {push} from "../../core/store/push.svelte";
     import {access, openAccess, openPro as openProSheet} from "../../core/store/access.svelte";
-    import ProBadge from "../../shared/lib/pro-badge.svelte";
     import NewSignal from "./new-signal.view.svelte";
     import {icons} from "../../assets/icons/icons";
     import {_} from "../../core/utils/i18";
@@ -36,6 +36,7 @@
         ? null
         : pushNotice(push.perm, push.asked, signals.list.length > 0, inIosTab));
     let dim = $derived(isDim(connection.state));
+    let hasLine = $derived(statusLine(connection.state) !== null);
 
     onMount(() => {
         void loadSignals();
@@ -46,7 +47,8 @@
     }
 
     function toNewSignal() {
-        if (needInstallGate()) gateOpen = true;
+        if (active >= limit) openAccess();
+        else if (needInstallGate()) gateOpen = true;
         else toCreateSignal();
     }
 
@@ -84,7 +86,7 @@
 
     <MainTmpl isShowHeader={false} isOverflowScroll={true}>
         {#snippet content()}
-            <div class="w-full flex flex-col gap-2 pb-12">
+            <div class="w-full flex flex-col gap-2 {hasLine ? 'pb-40' : 'pb-35'}">
                 <div class="flex flex-row items-center gap-2 pt-1 min-h-8">
                     <h1 class="grow min-w-0 truncate text-sm-3 text-white font-light">
                         {$_('SIGNALS')}
@@ -92,25 +94,19 @@
                     </h1>
 
                     <button type="button"
-                            class="flex items-center justify-center h-7 min-w-7 shrink-0 pl-0.5 {me.pro ? 'pr-1' : 'pr-0.5'} border border-fort-300 rounded-md text-cyan-200"
+                            class="flex items-center gap-1 h-7 shrink-0 {me.pro ? 'pl-[3px]' : 'pl-1'} pr-2 rounded-md bg-fort-100 border border-fort-300
+                                   text-sm-3 font-light text-cyan-200 overflow-hidden ripple-container rpl-white"
                             aria-label={$_(me.pro ? 'ACCESS_ARIA_PRO' : 'ACCESS_ARIA_FREE')}
+                            use:addRippleEffect
                             onclick={openAccess}>
-                        <span class="w-5 h-5" aria-hidden="true">{@html icn.key}</span>
                         {#if me.pro}
-                            <ProBadge/>
+                            <span class="flex items-center h-5 px-1.5 rounded-md bg-cyan-400/15 font-bold">PRO</span>
                         {/if}
+                        <i class="h-5 w-5">
+                            {@html icn.key}
+                        </i>
+                        {$_('ACCESS')}
                     </button>
-
-                    {#if active < limit}
-                        <button type="button"
-                                class="flex items-center justify-center border border-fort-300 rounded-md w-7 h-7 shrink-0 p-1 text-cyan-200"
-                                aria-label={$_('NEW_SIGNAL')}
-                                onclick={toNewSignal}>
-                            <i class="h-5 w-5">
-                                {@html icn.plus}
-                            </i>
-                        </button>
-                    {/if}
                 </div>
 
                 <ConnectionNotice/>
@@ -119,8 +115,10 @@
                     <NoticeBar tone="yellow" title={$_('INSTALL_NOTICE_TITLE')} text={$_('INSTALL_NOTICE_TEXT')}>
                         {#snippet action()}
                             <button type="button"
-                                    class="ml-1 px-1.5 h-6 rounded-md border border-yellow-400/40 text-xs-3 text-yellow-200"
+                                    class="ml-1 px-1.5 h-6 rounded-md border border-yellow-400/40 text-xs-3 text-yellow-200
+                                           overflow-hidden ripple-container rpl-white"
                                     aria-haspopup="dialog"
+                                    use:addRippleEffect
                                     onclick={() => installOpen = true}>
                                 {$_('INSTALL_BTN')}
                             </button>
@@ -130,7 +128,9 @@
                     <NoticeBar tone="yellow" title={$_('PUSH_OFF_TITLE')} text={$_('PUSH_OFF_TEXT')}>
                         {#snippet action()}
                             <button type="button"
-                                    class="ml-1 px-1.5 h-6 rounded-md border border-yellow-400/40 text-xs-3 text-yellow-200"
+                                    class="ml-1 px-1.5 h-6 rounded-md border border-yellow-400/40 text-xs-3 text-yellow-200
+                                           overflow-hidden ripple-container rpl-white"
+                                    use:addRippleEffect
                                     onclick={enablePush}>
                                 {$_('PUSH_ENABLE')}
                             </button>
@@ -162,4 +162,20 @@
             </div>
         {/snippet}
     </MainTmpl>
+
+    {#if active < limit || !me.pro}
+        <div class="max-w-104 fixed inset-x-4 mx-auto flex justify-end z-1000 pointer-events-none
+                    mb-safe-nav {hasLine ? 'bottom-21.5' : 'bottom-16.5'}">
+            <button type="button"
+                    class="flex items-center justify-center w-14 h-14 rounded-full bg-cyan-400 text-fort-100
+                           pointer-events-auto overflow-hidden ripple-container rpl-white"
+                    aria-label={$_('NEW_SIGNAL')}
+                    use:addRippleEffect
+                    onclick={toNewSignal}>
+                <i class="h-6 w-6">
+                    {@html icn.plus}
+                </i>
+            </button>
+        </div>
+    {/if}
 {/if}

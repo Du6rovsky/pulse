@@ -32,7 +32,7 @@ export const PLANS: Plan[] = [
     {id: '12m', months: 12, rub: 21990},
 ];
 
-export const TERMS_V = '2026-10-20';
+export const TERMS_V = '2026-10-27';
 
 export function planDiscount(plan: Plan, base: Plan): number {
     return Math.round((1 - plan.rub / (base.rub * plan.months)) * 100);

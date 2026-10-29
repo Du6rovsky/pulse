@@ -1,6 +1,7 @@
 <script lang="ts">
     import {dateLong, money, receiptDate, snoName} from "../../core/utils/pay.util";
     import {rub} from "../../core/utils/new-signal.util";
+    import {addRippleEffect} from "../../core/utils/toolbox.util";
     import {PLAN_NAMES} from "@shared";
     import {pay} from "../../core/store/pay.svelte";
     import {me} from "../../core/store/me.svelte";
@@ -127,7 +128,8 @@
 
                 {#if pay.receipts.length > 1}
                     <button type="button"
-                            class="h-11 rounded-lg border border-fort-300 text-sm-4 text-white font-light"
+                            class="h-11 rounded-lg border border-fort-300 text-sm-4 text-white font-light overflow-hidden ripple-container rpl-white"
+                            use:addRippleEffect
                             onclick={nextReceipt}>
                         {$_('RCPT_NEXT')}
                     </button>

@@ -135,7 +135,14 @@ function nextReceipt(): void {
 }
 
 async function disableQuote(): Promise<void> {
-    access.refundRub = (await request<DisableQuoteData>('lic.disableQuote', {})).amountRub;
+    const d = await request<DisableQuoteData>('lic.disableQuote', {});
+    access.refundRub = d.amountRub;
+    access.refundUntil = d.until ?? 0;
+}
+
+async function loadDisableQuote(online: boolean): Promise<void> {
+    access.refundRub = 0;
+    if (online) await disableQuote().catch(() => {});
 }
 
 async function openDisable(): Promise<void> {
@@ -144,7 +151,7 @@ async function openDisable(): Promise<void> {
     access.error = '';
     try {
         await disableQuote();
-        access.sheet = 'disable';
+        if (access.refundRub > 0) access.sheet = 'disable';
     } catch {
     } finally {
         access.busy = false;
@@ -158,11 +165,15 @@ async function disablePro(): Promise<void> {
     try {
         const d = await request<DisableQuoteData>('lic.disable', {amountRub: access.refundRub});
         if (d.amountRub > 0) writeRefund(true);
+        access.refundRub = 0;
         if (access.sheet === 'disable') access.sheet = 'access';
     } catch (e) {
         const err = e as Partial<ErrData>;
         access.error = err?.message ?? '';
-        if (err?.code === 'REFUND_CHANGED') await disableQuote().catch(() => {});
+        if (err?.code === 'REFUND_CHANGED') {
+            await disableQuote().catch(() => {});
+            if (!access.refundRub && access.sheet === 'disable') access.sheet = 'access';
+        }
     } finally {
         access.busy = false;
     }
@@ -227,6 +238,7 @@ export {
     closeSheet,
     openReceipt,
     nextReceipt,
+    loadDisableQuote,
     openDisable,
     disablePro,
     checkRefunds,
